@@ -1,6 +1,6 @@
-from turtle import position
 import pygame
 import time
+from classes.leaderboard import LeaderBoard
 import settings
 from pygame.locals import *
 from .snake.snake import Snake
@@ -68,6 +68,8 @@ class Game:
 
     def die(self):
         self.play_sound("crash")
+        leaderboard = LeaderBoard()
+        leaderboard.save_score(self.snake.length)
         raise NameError("GameOver")
 
     def draw(self):
@@ -116,17 +118,34 @@ class Game:
 
     def show_game_over(self):
         self.surface.fill(settings.BACKGROUND_COLOR)
+
         font = pygame.font.SysFont('arial', 30)
         line1 = font.render(
             f"Game is over! Your score is {self.snake.length}", True, (255, 255, 255))
-        self.surface.blit(line1, (200, 300))
+        self.surface.blit(line1, (200, 200))
+
         line2 = font.render(
             "To play again press Enter. To exit press Escape!", True, (255, 255, 255))
-        self.surface.blit(line2, (200, 350))
+        self.surface.blit(line2, (200, 250))
+
+        self.show_leaderboard(font)
 
         pygame.display.flip()
 
         pygame.mixer.music.pause()
+
+    def show_leaderboard(self, font):
+        text = font.render(
+            "Leaderboard:", True, (255, 255, 255))
+        self.surface.blit(text, (200, 350))
+
+        self.show_scores(font)
+
+    def show_scores(self, font):
+        for i in range(3):
+            text = font.render(
+                "1. 5", True, (255, 255, 255))
+            self.surface.blit(text, (230, 400 + i*50))
 
     def reset(self):
         self.pause = False

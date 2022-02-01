@@ -5,4 +5,5 @@ Done:
 [X] speed up after eating
 
 ToDo:
-[] Leaderboard
+[->] Leaderboard
+[] Documentation
