@@ -19,16 +19,20 @@ class Snake:
             self.body.draw(self.head.get_position())
 
     def move_up(self):
-        self.direction = 'up'
+        if self.direction != 'down':
+            self.direction = 'up'
 
     def move_down(self):
-        self.direction = 'down'
+        if self.direction != 'up':
+            self.direction = 'down'
 
     def move_left(self):
-        self.direction = 'left'
+        if self.direction != 'right':
+            self.direction = 'left'
 
     def move_right(self):
-        self.direction = 'right'
+        if self.direction != 'left':
+            self.direction = 'right'
 
     def walk(self):
         if self.length > 1:
