@@ -1,7 +1,8 @@
 Done:
 [X] Die behind map
 [X] Prevent moving backwards
+[X] render corect type of new body element after snake grow()
+[X] speed up after eating
 
 ToDo:
-[] render corect type of new body element after snake grow()
-[] speed up after eating
+[] Leaderboard

@@ -15,12 +15,12 @@ class Game:
         pygame.mixer.init()
         self.play_background_music()
 
-        self.surface = pygame.display.set_mode((1000, 800))
+        self.surface = pygame.display.set_mode(settings.MAP_SIZE)
         self.surface.fill((0, 100, 0))
         self.snake = Snake(self.surface, 2)
         self.food = Food(self.surface)
 
-        self.move_time = 0.3
+        self.move_time = settings.MOVE_TIME
 
         self.snake.draw()
         self.food.draw()
@@ -54,6 +54,7 @@ class Game:
             self.play_sound("ding")
             self.food.set_position()
             self.snake.grow()
+            self.move_time = self.move_time * 0.95
 
         # Snake collision with itself
         for i in range(0, self.snake.length - 1):
@@ -132,6 +133,7 @@ class Game:
         self.snake = Snake(self.surface, 2)
         self.food = Food(self.surface)
         pygame.mixer.music.unpause()
+        self.move_time = settings.MOVE_TIME
 
     def play_sound(self, name):
         sound = pygame.mixer.Sound(f"resources/{name}.mp3")

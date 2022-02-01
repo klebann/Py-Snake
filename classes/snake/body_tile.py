@@ -13,9 +13,9 @@ class Type(Enum):
 
 
 class Body_Tile:
-    def __init__(self, parent_screen):
+    def __init__(self, parent_screen, position=(-settings.SIZE, settings.SIZE)):
         self.parent_screen = parent_screen
-        self.x, self.y = (-settings.SIZE, -settings.SIZE)
+        self.x, self.y = position
         self.type = Type.HORIZONTAL
 
     def draw(self):

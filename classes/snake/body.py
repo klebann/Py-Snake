@@ -1,4 +1,6 @@
 from pygame import image
+
+import settings
 from .body_tile import Body_Tile, Type
 
 
@@ -46,8 +48,18 @@ class Body:
                 self.tiles[i].type = Type.CORNER_UP_RIGHT
 
     def grow(self):
+        last = self.length-1
+        x, y = self.lastposition
+        type = self.tiles[last].type
+        if (type == Type.HORIZONTAL):
+            new_position = (x, -settings.SIZE)
+        else:
+            new_position = (-settings.SIZE, y)
+
+        body_tile = Body_Tile(self.parent_screen, new_position)
+
         self.length += 1
-        self.tiles.append(Body_Tile(self.parent_screen))
+        self.tiles.append(body_tile)
 
     def follow(self, head_position):
         self.lastposition = self.tiles[self.length - 1].get_position()
