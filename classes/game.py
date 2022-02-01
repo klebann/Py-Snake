@@ -58,8 +58,16 @@ class Game:
         # Snake collision with itself
         for i in range(0, self.snake.length - 1):
             if self.is_collision(self.snake.get_head_position(), self.snake.get_body_position(i)):
-                self.play_sound("crash")
-                raise NameError("GameOver")
+                self.die()
+
+        # Snake outside walls
+        x, y = self.snake.get_head_position()
+        if x >= 1000 or x < 0 or y >= 800 or y < 0:
+            self.die()
+
+    def die(self):
+        self.play_sound("crash")
+        raise NameError("GameOver")
 
     def draw(self):
         self.render_background()
