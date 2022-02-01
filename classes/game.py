@@ -1,8 +1,9 @@
+from turtle import position
 import pygame
 import time
 import settings
 from pygame.locals import *
-from .snake import Snake
+from .snake.snake import Snake
 from .food import Food
 
 
@@ -16,7 +17,7 @@ class Game:
 
         self.surface = pygame.display.set_mode((1000, 800))
         self.surface.fill((0, 100, 0))
-        self.snake = Snake(self.surface, 1)
+        self.snake = Snake(self.surface, 2)
         self.food = Food(self.surface)
 
         self.move_time = 0.3
@@ -39,25 +40,26 @@ class Game:
                 try:
                     if not self.pause:
                         self.play()
-                except Exception as e:
+                except NameError:
                     self.show_game_over()
                     self.pause = True
 
     def play(self):
         self.snake.walk()
+
         self.draw()
 
         # Snake collision with food
-        if self.is_collision(self.snake.x[0], self.snake.y[0], self.food.x, self.food.y):
+        if self.is_collision(self.snake.get_head_position(), self.food.get_position()):
             self.play_sound("ding")
             self.food.set_position()
-            self.snake.increase_length()
+            self.snake.grow()
 
         # Snake collision with itself
-        for i in range(1, self.snake.length):
-            if self.is_collision(self.snake.x[0], self.snake.y[0], self.snake.x[i], self.snake.y[i]):
+        for i in range(0, self.snake.length - 1):
+            if self.is_collision(self.snake.get_head_position(), self.snake.get_body_position(i)):
                 self.play_sound("crash")
-                raise "game over"
+                raise NameError("GameOver")
 
     def draw(self):
         self.render_background()
@@ -69,6 +71,7 @@ class Game:
         pygame.display.flip()
 
     def events(self):
+
         for event in pygame.event.get():
             if event.type == QUIT:
                 return False
@@ -85,9 +88,12 @@ class Game:
                     self.snake.move_right()
                 if event.key == K_LEFT:
                     self.snake.move_left()
+
         return True
 
-    def is_collision(self, x1, y1, x2, y2):
+    def is_collision(self, position1, position2):
+        x1, y1 = position1
+        x2, y2 = position2
         if x1 >= x2 and x1 < x2 + settings.SIZE:
             if y1 >= y2 and y1 < y2 + settings.SIZE:
                 return True
@@ -115,7 +121,7 @@ class Game:
 
     def reset(self):
         self.pause = False
-        self.snake = Snake(self.surface, 1)
+        self.snake = Snake(self.surface, 2)
         self.food = Food(self.surface)
         pygame.mixer.music.unpause()
 

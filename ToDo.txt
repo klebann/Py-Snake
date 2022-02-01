@@ -1,0 +1,3 @@
+[] render corect type of new body element after snake grow()
+[] Prevent moving backwards
+[] Die behind map

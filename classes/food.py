@@ -15,3 +15,6 @@ class Food:
     def set_position(self):
         self.x = random.randint(0, 24) * settings.SIZE
         self.y = random.randint(0, 19) * settings.SIZE
+
+    def get_position(self):
+        return (self.x, self.y)
