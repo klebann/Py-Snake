@@ -3,7 +3,7 @@ Done:
 [X] Prevent moving backwards
 [X] render corect type of new body element after snake grow()
 [X] speed up after eating
+[X] Leaderboard
 
 ToDo:
-[->] Leaderboard
 [] Documentation

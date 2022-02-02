@@ -1,10 +1,10 @@
 import pygame
 import time
-from classes.leaderboard import LeaderBoard
 import settings
 from pygame.locals import *
 from .snake.snake import Snake
 from .food import Food
+from .leaderboard import LeaderBoard
 
 
 class Game:
@@ -68,7 +68,7 @@ class Game:
 
     def die(self):
         self.play_sound("crash")
-        leaderboard = LeaderBoard()
+        leaderboard = LeaderBoard(self.surface)
         leaderboard.save_score(self.snake.length)
         raise NameError("GameOver")
 
@@ -117,35 +117,25 @@ class Game:
         self.surface.blit(score, (800, 10))
 
     def show_game_over(self):
+        leader_board = LeaderBoard(self.surface)
+        font = pygame.font.SysFont('arial', 30)
+
         self.surface.fill(settings.BACKGROUND_COLOR)
 
-        font = pygame.font.SysFont('arial', 30)
+        place = leader_board.which_place(self.snake.length)
         line1 = font.render(
-            f"Game is over! Your score is {self.snake.length}", True, (255, 255, 255))
+            f"Game is over! Your score is {self.snake.length}. You are TOP {place}", True, (255, 255, 255))
         self.surface.blit(line1, (200, 200))
 
         line2 = font.render(
             "To play again press Enter. To exit press Escape!", True, (255, 255, 255))
         self.surface.blit(line2, (200, 250))
 
-        self.show_leaderboard(font)
+        leader_board.show()
 
         pygame.display.flip()
 
         pygame.mixer.music.pause()
-
-    def show_leaderboard(self, font):
-        text = font.render(
-            "Leaderboard:", True, (255, 255, 255))
-        self.surface.blit(text, (200, 350))
-
-        self.show_scores(font)
-
-    def show_scores(self, font):
-        for i in range(3):
-            text = font.render(
-                "1. 5", True, (255, 255, 255))
-            self.surface.blit(text, (230, 400 + i*50))
 
     def reset(self):
         self.pause = False
