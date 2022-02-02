@@ -4,6 +4,11 @@ import settings
 
 
 class Type(Enum):
+    """Enum for body tile type
+
+    Args:
+        Enum: Enum class
+    """
     HORIZONTAL = 1
     VERTICAL = 2
     CORNER_UP_LEFT = 3
@@ -13,16 +18,33 @@ class Type(Enum):
 
 
 class Body_Tile:
+    """
+    Body tile class that is a part of snake/Body class
+    """
+
     def __init__(self, parent_screen, position=(-settings.SIZE, settings.SIZE)):
+        """Initialize new body tile.
+
+        Args:
+            parent_screen (pygame.display): Screen where body parts will be displayed.
+            position (tuple, optional): Position of new body tile. Defaults to (-settings.SIZE, settings.SIZE).
+        """
         self.parent_screen = parent_screen
         self.x, self.y = position
         self.type = Type.HORIZONTAL
 
     def draw(self):
+        """Function to draw body tile on screen
+        """
         image = self.get_image()
         self.parent_screen.blit(image, (self.x, self.y))
 
     def get_image(self):
+        """Load graphic for body_tile depending of its type.
+
+        Returns:
+            pygame.image: Pygame image class with tile graphic
+        """
         body = image.load("resources/body.png").convert_alpha()
         if self.type == Type.HORIZONTAL:
             return body
@@ -40,7 +62,17 @@ class Body_Tile:
             return corner
 
     def set_position(self, position):
+        """Set position of this tile.
+
+        Args:
+            position (tuple): New coordinates for this body tile.
+        """
         self.x, self.y = position
 
     def get_position(self):
+        """Get position of this tile.
+
+        Returns:
+            tuple: Position of this tile.
+        """
         return (self.x, self.y)

@@ -8,7 +8,12 @@ from .leaderboard import LeaderBoard
 
 
 class Game:
+    """Game class that manages snake, food, colision, time, music...
+    """
+
     def __init__(self):
+        """Create game.
+        """
         pygame.init()
         pygame.display.set_caption("Py-Snake")
 
@@ -26,6 +31,8 @@ class Game:
         self.food.draw()
 
     def run(self):
+        """Run game in infinite loop until ESC.
+        """
         running = True
         self.pause = False
         lastFrameTime = time.time()
@@ -45,6 +52,9 @@ class Game:
                     self.pause = True
 
     def play(self):
+        """Game logic each frame.
+        """
+
         self.snake.walk()
 
         self.draw()
@@ -67,12 +77,19 @@ class Game:
             self.die()
 
     def die(self):
+        """End of the game, play crash sound, and save score to leaderboard. Thorw Exception.
+
+        Raises:
+            NameError: Raise gameover excetion to signalize that game is over.
+        """
         self.play_sound("crash")
         leaderboard = LeaderBoard(self.surface)
         leaderboard.save_score(self.snake.length)
         raise NameError("GameOver")
 
     def draw(self):
+        """Draw game scene. Draw food, snake and score.
+        """
         self.render_background()
 
         self.food.draw()
@@ -82,6 +99,11 @@ class Game:
         pygame.display.flip()
 
     def events(self):
+        """Manage user inputs
+
+        Returns:
+            bool: Return false if player want to quit the game.
+        """
 
         for event in pygame.event.get():
             if event.type == QUIT:
@@ -103,6 +125,15 @@ class Game:
         return True
 
     def is_collision(self, position1, position2):
+        """Check colision of two coordinates.
+
+        Args:
+            position1 (tuple): First position
+            position2 (tuple): Seccond position
+
+        Returns:
+            bool: True if collision occures, false if not.
+        """
         x1, y1 = position1
         x2, y2 = position2
         if x1 >= x2 and x1 < x2 + settings.SIZE:
@@ -111,12 +142,16 @@ class Game:
         return False
 
     def display_score(self):
+        """Diplay score in the right corner.
+        """
         font = pygame.font.SysFont('arial', 30)
         score = font.render(
             f"Score: {self.snake.length}", True, (255, 255, 255))
         self.surface.blit(score, (800, 10))
 
     def show_game_over(self):
+        """Show game over screen.
+        """
         leader_board = LeaderBoard(self.surface)
         font = pygame.font.SysFont('arial', 30)
 
@@ -138,6 +173,8 @@ class Game:
         pygame.mixer.music.pause()
 
     def reset(self):
+        """Reset all game variables. Unpause music.
+        """
         self.pause = False
         self.snake = Snake(self.surface, 2)
         self.food = Food(self.surface)
@@ -145,14 +182,23 @@ class Game:
         self.move_time = settings.MOVE_TIME
 
     def play_sound(self, name):
+        """Play sound by its name
+
+        Args:
+            name (string): Sound name from resources folder in .mp3 format
+        """
         sound = pygame.mixer.Sound(f"resources/{name}.mp3")
         pygame.mixer.Sound.play(sound)
 
     def play_background_music(self):
+        """Play background music
+        """
         pygame.mixer.music.load("resources/bg_music_1.mp3")
         pygame.mixer.music.set_volume(0.2)
         pygame.mixer.music.play()
 
     def render_background(self):
+        """Render game background from resources.
+        """
         bg = pygame.image.load("resources/background.png")
         self.surface.blit(bg, (0, 0))

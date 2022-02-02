@@ -1,6 +1,6 @@
 """
-main.py
-Snake game created in Python language.
+Snake game in python language
+This is the main file where game is executed.
 """
 
 from classes.game import Game
